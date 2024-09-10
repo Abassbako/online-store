@@ -8,13 +8,9 @@ const createToken = (_id) => {
     return jwt.sign({_id}, jwtKey, {expiresIn: "31d"});
 };
 
-
-
 const createUser = async (req, res) => {
-    
     const { name, email, password } = req.body;
     try {
-        const hashedPassword = userExist.password;
         let userExist = await userModel.findOne({email});
 
         if (userExist) return res.status(400).json('email address already exist');
@@ -27,14 +23,13 @@ const createUser = async (req, res) => {
 
         const salt = await bcrypt.genSalt(10);
 
-        const newUser = await userModel(req.body);
+        userExist = await userModel(req.body);
         
-        hashedPassword = await bcrypt.hash(hashedPassword, salt);
+        userExist.password = await bcrypt.hash(userExist.password, salt);
 
-        const saveUser = await newUser.save();
+        await userExist.save();
 
         const token = createToken(userExist._id);
-
         res.status(201).json({name, email, password, token});
     } catch (e) {
         res.status(500).json(e);
@@ -42,4 +37,41 @@ const createUser = async (req, res) => {
     };
 };
 
-export { createUser };
+const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const userExist = await userModel.findOne({ email });
+
+        if (!userExist) return res.status(400).json('Invalid email or password');
+    
+        const isValidPassword = await bcrypt.compare(password, userExist.password);
+
+        if (!isValidPassword) return res.status(401).json('Invalid email or password');
+
+        const token = createToken(userExist._id); 
+        return res.status(200).json({name: userExist.name, email, token})
+    } catch (e) {
+        console.error(new Error(e));
+        res.status(500).json(e);
+    ;}
+};
+
+const searchUser = async (req, res) => {
+    try {
+        const {userId} = req.params;
+
+        const user = await userModel.findById(userId);
+
+        if (!user) return res.status()
+    } catch (e) {
+        console.error(new Error(e));
+        res.status(500).json(e);
+    };
+}
+
+export { 
+    createUser, 
+    loginUser,
+    searchUser,
+};
