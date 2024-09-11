@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import userModel from "../models/userModels.mjs";
 import validator from "validator";
 import bcrypt from "bcrypt";
@@ -57,21 +58,66 @@ const loginUser = async (req, res) => {
     ;}
 };
 
-const searchUser = async (req, res) => {
+const searchUser = async (req, res) => {                       
+    const userId = req.params.userId;
+    if (ObjectId.isValid(userId)) {
+        try {
+            const userId = req.params.userId;
+
+            const searchedUser = await userModel.findById(userId);
+
+            res.status(200).json(searchedUser);
+        } catch (e) {
+            console.error(new Error(e));
+            res.status(500).json(e);
+        }
+    } else return res.status(400).json("Not a valid id");
+};
+
+const updateUser = async (req, res) => {
     try {
-        const {userId} = req.params;
+        const { userId } = req.params;
+        if (ObjectId.isValid(userId)) {
+            const updatedUser = await userModel.findByIdAndUpdate(userId, {$set: req.body}, {new: true});
 
-        const user = await userModel.findById(userId);
-
-        if (!user) return res.status()
+            res.status(200).json(updatedUser);
+        } else return res.status(400).json('Not a valid id');
     } catch (e) {
         console.error(new Error(e));
         res.status(500).json(e);
     };
-}
+};
+
+const deleteUser = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        if (ObjectId.isValid(userId)) {
+            const deletedUser = await userModel.findByIdAndDelete(userId);
+
+            res.status(200).json(deletedUser);
+        } else return res.status(400).json("Not a valid id");
+    } catch (e) {
+        console.error(new Error(e));
+        res.status(500).json(e);
+    }
+};
+
+const allUsers = async (req, res) => {
+    try {
+        const users = await userModel.find();
+
+        res.status(200).json(users);
+    } catch (e) {
+        console.error(new Error(e));
+        res.status(500).json(e);
+    };
+};
 
 export { 
     createUser, 
     loginUser,
     searchUser,
+    updateUser,
+    deleteUser,
+    allUsers,
 };
