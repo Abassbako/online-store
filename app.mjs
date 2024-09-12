@@ -1,5 +1,7 @@
 import userRoutes from "./routers/userRoutes.mjs";
 import productRoutes from "./routers/productRoutes.mjs";
+import orderRoutes from "./routers/orderRoutes.mjs";
+import cartRoutes from "./routers/cartRoutes.mjs";
 
 import express from "express";
 import mongoose from "mongoose";
@@ -15,6 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('combined'));
 app.use('/api/v2/users', userRoutes);
 app.use('/api/v2/products', productRoutes);
+app.use('/api/v2/orders', orderRoutes);
+app.use('/api/v2/carts', cartRoutes);
 
 const PORT = process.env.PORT || 3000;
 const uri = process.env.MONGO_URL

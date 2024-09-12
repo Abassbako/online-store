@@ -75,10 +75,21 @@ const deleteProducts = async (req, res) => {
     };
 };
 
+const getProducts = async (req, res) => {
+    try {
+        const products = await productModels.find();
+
+        res.status(200).json(products);
+    } catch (e) {
+        console.error(new Error(e));
+        res.status(500).json(e);
+    };
+};
 
 export {
     newProducts,
     updateProducts,
     deleteProducts,
     searchProducts,
+    getProducts,
 }

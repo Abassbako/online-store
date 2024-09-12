@@ -42,6 +42,9 @@ const productSchema = new mongoose.Schema({
       ReviewCount: { type: Number }
     },
     Tags: [String]
+},
+{
+  timestamps: true,
 })
 
 export default mongoose.model('product', productSchema);
