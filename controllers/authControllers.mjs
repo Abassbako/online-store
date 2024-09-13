@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import userModel from "../models/userModels.mjs";
+import userModel from "../models/authModels.mjs";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

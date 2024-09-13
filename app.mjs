@@ -1,4 +1,4 @@
-import userRoutes from "./routers/userRoutes.mjs";
+import userRoutes from "./routers/authRoutes.mjs";
 import productRoutes from "./routers/productRoutes.mjs";
 import orderRoutes from "./routers/orderRoutes.mjs";
 import cartRoutes from "./routers/cartRoutes.mjs";
@@ -9,11 +9,19 @@ import bodyParser from "body-parser";
 import morgan from "morgan";
 import dotenv from "dotenv";
 dotenv.config();
+import path from "path";
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 
+// Middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('combined'));
 app.use('/api/v2/users', userRoutes);
 app.use('/api/v2/products', productRoutes);
@@ -29,6 +37,10 @@ mongoose.connect(uri)
 })
 .catch((e) => {
     console.error(new Error(`MongoDB Connection Error: ${e.message}`));
+});
+
+app.get('/homepage', (req, res) => {
+    res.render('index');
 });
 
 app.listen(PORT, () => {

@@ -1,0 +1,22 @@
+ecommerce/
+├── public/
+│   ├── css/
+│   └── js/
+├── views/
+│   ├── index.html
+│   ├── products.html
+│   ├── cart.html
+│   └── checkout.html
+├── routes/
+│   ├── productRoutes.mjs
+│   ├── cartRoutes.mjs
+│   ├── authRoutes.mjs
+│   ├── orderRoutes.mjs
+├── models/
+│   ├── userModels.mjs
+│   ├── productModels.mjs
+|   ├── orderModels.mjs
+|   ├── cartModels.mjs
+|   ├──
+├── app.mjs
+└── package.json

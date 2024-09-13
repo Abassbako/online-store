@@ -1,6 +1,7 @@
 import productModels from "../models/productModels.mjs";
 import { ObjectId } from "mongodb";
 
+// Creating a new product
 const newProducts = async (req, res) => {
     const ProductID = req.body.ProductID;
     const Name = req.body.Name;
@@ -27,6 +28,7 @@ const newProducts = async (req, res) => {
     };
 };
 
+// Searching for products
 const searchProducts = async (req, res) => {
     const {_id} = req.params;
     try {
@@ -43,6 +45,7 @@ const searchProducts = async (req, res) => {
     };
 };
 
+// Updating products
 const updateProducts = async (req, res) => {
     const {id} = req.params;
     try {
@@ -62,6 +65,7 @@ const updateProducts = async (req, res) => {
     };
 };
 
+// Deleting products
 const deleteProducts = async (req, res) => {
     try {
         if (ObjectId.isValid(req.params.id)) {
@@ -75,6 +79,7 @@ const deleteProducts = async (req, res) => {
     };
 };
 
+// List of products
 const getProducts = async (req, res) => {
     try {
         const products = await productModels.find();

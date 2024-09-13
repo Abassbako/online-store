@@ -5,7 +5,7 @@ import {
     updateUser,
     deleteUser,
     allUsers,
-} from "../controllers/userControllers.mjs";
+} from "../controllers/authControllers.mjs";
 
 import { Router } from "express";
 
